@@ -24,7 +24,7 @@ def open_image(img_name, grayscale=False):
     if img is None:
         print ('Erro abrindo a imagem.\n')
         sys.exit ()
-    return img.astype (np.float32) / 255.0
+    return img#.astype (np.float32) / 255.0
 
 def draw_components(img, components):
     img_out = img.copy()
@@ -36,7 +36,9 @@ def verify_image_components(images):
     for img, filename in images:
         expected = filename.split('.')[0]
         img_out = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        result = countRice(img_out)
+        #cv2.imshow("img_out", img_out)
+        #img_out = img.copy()
+        result = countRice(img_out, filename)
         
         cv2.imwrite('output/' + filename, draw_components(img, result['components'])*255)
         print("Expected: %s, Result: %s\n" % (expected, result['quantity']))
