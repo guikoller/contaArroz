@@ -41,7 +41,32 @@ def rotula (img):
     return (list_componentes)
 
 def estimate_blob_size(components):
-    sizes = sorted(componente['n_pixels'] for componente in components)
+    sizes = sorted(componente['n_pixels'] for componente in components)  
+  
+    list_diff = []
+    for i in range(len(sizes)-1):
+        list_diff.append(round(sizes[i+1] - sizes[i]))
+    
+    print(sizes)
+
+    for i in range(len(sizes)-1):
+        diff = sizes[i+1] - sizes[i]
+        single_list = sizes
+        if diff > 200:
+            single_list = sizes[:i]
+            print(i)
+            break
+        
+            # o menor valor tem que ser mais ou menos a metade do tamanho do arroz mediano
+            # o valor mediano tem que ser no máximo 2,5 vezes maior que o menor valor
+            # desconsiderar os outros menores valores
+
+    for i in range(len(single_list)-1):
+        if np.median(single_list)/single_list[i] < 2: #esse é o local de corte
+            print(np.median(single_list[i:]))
+            return np.median(single_list[i:])
+    
+    return np.median(sizes)
     lower_third = sizes[:len(sizes) // 3]
     return sum(lower_third) / len(lower_third)
 
@@ -49,7 +74,10 @@ def estimate_quantity(components, avg_blob_size):
     estimated_quantity = 0
     for component in components:
         if component['n_pixels'] > avg_blob_size:
-            estimated_quantity += component['n_pixels'] // avg_blob_size
+            estimated_quantity += math.floor(component['n_pixels'] / avg_blob_size)
+            if round(component['n_pixels'] / avg_blob_size) != 1.0:
+                #print((component['n_pixels'] / avg_blob_size))
+                pass
         else:
             estimated_quantity += 1
     return estimated_quantity

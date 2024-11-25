@@ -3,6 +3,7 @@ import sys
 import cv2
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 INPUT_FOLDER =  'images'
 NEGATIVO = True
