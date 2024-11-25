@@ -19,8 +19,8 @@ def open_all_images(folder):
                 images.append((img, filename))
     return images
 
-def open_image(img_name, grayscale=False):
-    img = cv2.imread (img_name, cv2.IMREAD_GRAYSCALE if grayscale else cv2.IMREAD_COLOR)
+def open_image(img_name):
+    img = cv2.imread (img_name, cv2.IMREAD_COLOR)
     if img is None:
         print ('Erro abrindo a imagem.\n')
         sys.exit ()
@@ -29,23 +29,21 @@ def open_image(img_name, grayscale=False):
 def draw_components(img, components):
     img_out = img.copy()
     for c in components:
-        cv2.rectangle (img_out, (c['coordenadas']['L'], c['coordenadas'] ['T']), (c['coordenadas'] ['R'], c['coordenadas'] ['B']), (0,0,1))
+        cv2.rectangle (img_out, (c['coordenadas']['L'], c['coordenadas'] ['T']), (c['coordenadas'] ['R'], c['coordenadas'] ['B']), (1,0.8,0.9))
     return img_out
-
-def verify_image_components(images):
-    for img, filename in images:
-        expected = filename.split('.')[0]
-        img_out = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        #cv2.imshow("img_out", img_out)
-        #img_out = img.copy()
-        result = countRice(img_out, filename)
-        
-        cv2.imwrite('output/' + filename, draw_components(img, result['components'])*255)
-        print("Expected: %s, Result: %s\n" % (expected, result['quantity']))
 
 def main():
     images = open_all_images(INPUT_FOLDER)
-    verify_image_components(images)
+    for img, filename in images:
+        expected = filename.split('.')[0]
+        img_out = img.copy()
+        img_out = cv2.cvtColor(img_out, cv2.COLOR_BGR2GRAY)
+        result = countRice(img_out, filename)      
+        cv2.imwrite('output/' + filename, draw_components(img, result['components']))
+        print("Expected: %s, Result: %s\n" % (expected, result['quantity']))
+    
+    cv2.waitKey ()
+    cv2.destroyAllWindows ()
 
 if __name__ == "__main__":
     main()

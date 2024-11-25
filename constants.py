@@ -2,14 +2,15 @@ import os
 import sys
 import cv2
 import numpy as np
+import math
 
 INPUT_FOLDER =  'images'
-NEGATIVO = False
+NEGATIVO = True
 THRESHOLD = 0.8  # 0.8 arroz e 0.3 texto
-ALTURA_MIN = 1000
-LARGURA_MIN = 1000
-N_PIXELS_MIN = 30  # 100 arroz e 20 texto
-N_PIXELS_MAX = 1000
+ALTURA_MIN = 0
+LARGURA_MIN = 0
+N_PIXELS_MIN = 0  # 100 arroz e 20 texto
+N_PIXELS_MAX = 100000
 ARROZ = 1.0
 NO_ARROZ = 0.0
 
