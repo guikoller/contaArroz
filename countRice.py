@@ -51,7 +51,7 @@ def estimate_blob_size(components):
 
     #print(desvio)
 
-    for i in range(round(0.1*len(sizes)), len(desvio)):
+    for i in range(round(0.1*len(sizes)), len(desvio)): #ignora os 10% primeiros valores, pois o desvio padrão é alto, já que são considerados poucos arroz
         if desvio[i] > 10: # diferença entre dois desvios é maior do que 10, significa que tem um grupo de arroz na lista de arroz
             single_list = sizes[:i]
             #print(i)
@@ -61,11 +61,15 @@ def estimate_blob_size(components):
     return np.median(single_list)
 
 def estimate_quantity(components, avg_blob_size):
+    list = []
     estimated_quantity = 0
     for component in components:
         if component['n_pixels'] > avg_blob_size:
             #estimated_quantity += math.floor(component['n_pixels'] / avg_blob_size)
-            estimated_quantity += round(component['n_pixels'] / avg_blob_size)
+            #estimated_quantity += round(component['n_pixels'] / avg_blob_size, 2)
+            if math.modf(component['n_pixels'] / avg_blob_size)[0] > 0.4:
+                estimated_quantity += math.ceil(component['n_pixels'] / avg_blob_size)
+            else: estimated_quantity += math.floor(component['n_pixels'] / avg_blob_size)
         else:
             estimated_quantity += 1
     return estimated_quantity
