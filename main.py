@@ -5,10 +5,12 @@
 # Universidade Tecnológica Federal do Paraná
 #===============================================================================
 
-from constants import *
+import os
+import sys
 from countRice import *
 
-sys.setrecursionlimit(1000000000)
+INPUT_FOLDER =  'images'
+
 def open_all_images(folder):
     images = []
     for filename in os.listdir(folder):
@@ -24,7 +26,7 @@ def open_image(img_name):
     if img is None:
         print ('Erro abrindo a imagem.\n')
         sys.exit ()
-    return img#.astype (np.float32) / 255.0
+    return img
 
 def draw_components(img, components):
     img_out = img.copy()

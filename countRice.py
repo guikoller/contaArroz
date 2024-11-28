@@ -1,4 +1,9 @@
-from constants import *
+import cv2
+import numpy as np
+import math
+
+ARROZ = 1.0
+NO_ARROZ = 0.0
 
 def inunda(label, img, linha, coluna, n_pixels, coordenadas):
     stack = [(linha, coluna)]
@@ -61,7 +66,6 @@ def estimate_blob_size(components):
     return np.median(single_list)
 
 def estimate_quantity(components, avg_blob_size):
-    list = []
     estimated_quantity = 0
     for component in components:
         if component['n_pixels'] > avg_blob_size:
@@ -94,7 +98,6 @@ def countRice(img, filename):
     contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         cv2.drawContours(img, [contour], -1, (255, 255, 255), thickness=cv2.FILLED)
-    #cv2.imshow("flooded/"+filename, img)
     
     img = img.astype (np.float32)/ 255.0
     components = rotula(img)
